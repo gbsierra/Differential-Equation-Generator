@@ -1,11 +1,6 @@
 ﻿  App.cpp
-  imgui_impl_dx12.cpp
-  imgui_impl_win32.cpp
-  imgui.cpp
-  imgui_demo.cpp
-  imgui_draw.cpp
-  imgui_tables.cpp
-  imgui_widgets.cpp
+C:\Users\gabe2\Desktop\Differential Equation Generator\Differential Equation Generator\imgui\App.cpp(81,16): warning C4566: character represented by universal-character-name '\u2202' cannot be represented in the current code page (1252)
+C:\Users\gabe2\Desktop\Differential Equation Generator\Differential Equation Generator\imgui\App.cpp(81,84): warning C4566: character represented by universal-character-name '\u2202' cannot be represented in the current code page (1252)
   main.cpp
   Generating Code...
   Differential_Equation_Generator.vcxproj -> C:\Users\gabe2\Desktop\Differential Equation Generator\x64\Debug\Differential_Equation_Generator.exe
