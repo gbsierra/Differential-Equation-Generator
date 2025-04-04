@@ -1,0 +1,11 @@
+﻿  App.cpp
+  imgui_impl_dx12.cpp
+  imgui_impl_win32.cpp
+  imgui.cpp
+  imgui_demo.cpp
+  imgui_draw.cpp
+  imgui_tables.cpp
+  imgui_widgets.cpp
+  main.cpp
+  Generating Code...
+  Differential_Equation_Generator.vcxproj -> C:\Users\gabe2\Desktop\Differential Equation Generator\x64\Debug\Differential_Equation_Generator.exe
