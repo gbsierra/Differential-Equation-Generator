@@ -1,4 +1,7 @@
-﻿#include "App.h"
+﻿#pragma once
+
+#include "App.h"
+
 #include "imgui.h"
 #include <string>
 #include <memory>
@@ -25,14 +28,13 @@ public:
     FirstOrderLinearEquation() {
         UpdateInputs();
     }
-
+    // UpdateInputs
     void UpdateInputs() {
         P = hasVariableCoefficient ? std::to_string(rand() % 10 + 1) + "x"  : std::to_string(rand() % 10 + 1);
 
         Q = isHomogeneous ? 0 : rand() % 10 + 1;
     }
-
-    // Generate a string representation of the equation
+    // toString
     std::string toString() override {
         std::string equationType = (isHomogeneous ? "Homogeneous" : "Non-Homogeneous");
         std::string coefficientType = (hasVariableCoefficient ? "Variable Coefficient" : "Constant Coefficient");
@@ -50,6 +52,7 @@ private:
 public:
     // Constructor
     CauchyEulerEquation() : a(rand() % 10 + 1), b(rand() % 10 + 1) {}
+    // toString
     std::string toString() override {
         return "Generated Cauchy-Euler Equation:\nx^2 * d^2y/dx^2 + " + std::to_string(a) + "x*dy/dx + " + std::to_string(b) + "y = 0";
     }
@@ -61,8 +64,9 @@ private:
     int a, b, c;
 
 public:
-    //constructor
+    // Constructor
     HigherOrderEquation() : a(rand() % 10 + 1), b(rand() % 10 + 1), c(rand() % 10 + 1) {}
+    // toString
     std::string toString() override {
         return "Generated Higher-Order DE:\nd^2y/dx^2 + " + std::to_string(a) + "dy/dx + " + std::to_string(b) + "y = " + std::to_string(c);
     }
@@ -76,7 +80,7 @@ private:
 public:
     // Constructor
     PartialEquation() : alpha(rand() % 10 + 1), beta(rand() % 10 + 1) {}
-
+    // toString
     std::string toString() override {
         return "Generated Partial DE:\n∂^2u/∂x^2 + " + std::to_string(alpha) + "*∂u/∂x = " + std::to_string(beta);
     }
@@ -90,7 +94,7 @@ private:
 public:
     // Constructor
     SystemOfEquations() : x_coeff(rand() % 5 + 1), y_coeff(rand() % 5 + 1), rhs(rand() % 10 + 1) {}
-
+    // toString
     std::string toString() override {
         return "Generated System of Equations:\ndx/dt = " + std::to_string(x_coeff) + "x + " + std::to_string(y_coeff) + "y,\n"
             "dy/dt = " + std::to_string(rhs) + "x";
@@ -111,8 +115,7 @@ public:
         c = (rand() % 10 + 1); // Random constant multiplier for kx
         equationType = rand() % 2 + 1; // Choose randomly between 1 and 2
     }
-
-    // Method to represent the equation as a string
+    // toString
     std::string toString() override {
         if (equationType == 1) {
             //type 1: ln-based equation
@@ -137,8 +140,7 @@ private:
 public:
     // Constructor
     SeparableEquation() : p(rand() % 10 + 1), q(rand() % 10 + 1) {}
-
-    // Method to represent the equation as a string
+    // toString
     std::string toString() override {
         return "Generated Separable Equation:\n(dy/" + std::to_string(p) + "y) = (dx/" + std::to_string(q) + "x)";
     }
@@ -155,7 +157,7 @@ public:
     LaplaceTransformEquation()
         : a(rand() % 10 + 1), b(rand() % 10 + 1), c(rand() % 10 + 1), trigChoice(rand() % 3) {
     }
-
+    // toString
     std::string toString() override {
         std::string equation = "Generated Laplace Equation:\n";
         equation += "y'(t) + " + std::to_string(a) + "y(t) = ";
@@ -178,6 +180,7 @@ public:
 //class Equation Generator
 class EquationGenerator {
 public:
+    // generateEquation
     static std::shared_ptr<Equation> generateEquation(int choice) {
         if (choice == 1) {
             return std::make_shared<FirstOrderLinearEquation>();
@@ -228,15 +231,13 @@ namespace App {
     static int equation_choice = 2;
     static int last_equation_choice = 0;
 
-    void setFirstOrderHelperBool(bool val);
+    // smart pointer to selected equation
+    static std::shared_ptr<Equation> current_equation = std::make_shared<FirstOrderLinearEquation>();
+
+    // mutator for FirstOrderParametersWindow
     void setFirstOrderHelperBool(bool val) {
         first_order_helper_window = val;
     }
-
-    // Shared Equation Instance (points to selected equation)
-    static std::shared_ptr<Equation> current_equation = std::make_shared<FirstOrderLinearEquation>();
-
-    //
     // Renders First Order Linear Equation Helper Popup
     void RenderFirstOrderParametersWindow() {
         if (first_order_helper_window && std::dynamic_pointer_cast<FirstOrderLinearEquation>(current_equation)) {
@@ -272,13 +273,15 @@ namespace App {
     // Renders Main Equation Generation Window
     void RenderEquationSelectionWindow() {
         if (equation_selection_window) {
-            ImGui::SetNextWindowPos(ImVec2(240.0f, 100.0f), ImGuiCond_Always);
+            ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f), ImGuiCond_Always);
             ImGui::SetNextWindowSize(ImVec2(800.0f, 600.0f), ImGuiCond_Always);
 
+            ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.9f, 0.95f, 1.0f, 1.0f));
+
             ImGui::Begin("Generate Equation", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus);
-            // Dropdown to select the type of equation to generate
-            float windowWidth = ImGui::GetContentRegionAvail().x; // Available width
-            float textWidth = ImGui::CalcTextSize("Select Equation Type:").x; // Width of the text
+            // Dropdown of buttons to select the type of equation to generate
+            float windowWidth = ImGui::GetContentRegionAvail().x;
+            float textWidth = ImGui::CalcTextSize("Select Equation Type:").x;
 
             ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
             ImGui::Text("Select Equation Type:");
@@ -292,34 +295,39 @@ namespace App {
                     eq->hasVariableCoefficient ? "true" : "false");
             } testing */
 
-            // Aligning buttons
+            ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 10);
+            // creating radio buttons
             const char* labels[] = { "First-Order Linear", "Cauchy-Euler", "Higher-Order", "Partial ", "System of Equations", "Seperable", "Exact", "Laplace Transform"};
             for (int i = 0; i < 8; i++) {
                 textWidth = ImGui::CalcTextSize(labels[i]).x;
                 ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f - 20.0f);
+                ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 2);
                 ImGui::RadioButton(labels[i], &equation_choice, i + 1);
             }
+            ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 20);
 
             if (equation_choice==1 && last_equation_choice!=equation_choice) {
                 first_order_helper_window = true; // Open the helper window
             }
             last_equation_choice = equation_choice; // Update the last selection
 
-            // Center and resize the button
-            ImGui::SetCursorPosX((windowWidth - 200) * 0.5f); // Hardcode button width as 200
-            if (ImGui::Button("Generate Equation", ImVec2(200, 50))) { // Set the size directly
-                current_equation = EquationGenerator::generateEquation(equation_choice); // Update the equation
+            ImGui::SetCursorPosX((windowWidth - 200) * 0.5f);
+            if (ImGui::Button("Generate Equation", ImVec2(200, 50)) && !equation_display_window) {
+                current_equation = EquationGenerator::generateEquation(equation_choice); // Update current equation
                 equation_display_window = true;
             }
 
             ImGui::End();
+            ImGui::PopStyleColor();
+
         }
     }
 
     // Renders Equation Output
     void RenderEquationDisplayWindow() {
         if (equation_display_window) {
-            ImGui::Begin("Equation Display", &equation_display_window, ImGuiWindowFlags_AlwaysAutoResize);
+            ImGui::OpenPopup("Equation Display");
+            ImGui::BeginPopupModal("Equation Display", &equation_display_window, ImGuiWindowFlags_AlwaysAutoResize);
 
             // Display the generated equation
             if (current_equation) {
@@ -333,7 +341,7 @@ namespace App {
                 equation_display_window = false;
             }
 
-            ImGui::End();
+            ImGui::EndPopup();
         }
     }
 
@@ -344,26 +352,25 @@ namespace App {
             ImGui::ShowDemoWindow(&show_demo_window);
         }
 
-        ImGui::SetNextWindowPos(ImVec2(10, 430));
+        ImGui::SetNextWindowPos(ImVec2(9, 490));
+        ImGui::SetNextWindowSize(ImVec2(290.0f, 60.0f), ImGuiCond_Always);
+        ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(1.0f, 1.0f, 0.7f, 1.0f));
+
         ImGui::Begin("Welcome");
         ImGui::Text("Welcome, %s", name.c_str());
-        ImGui::Checkbox("Demo Window", &show_demo_window);
-
-        if (ImGui::Button("Button"))
-            counter++;
-        ImGui::SameLine();
-        ImGui::Text("counter = %d", counter);
+        //ImGui::Checkbox("Demo Window", &show_demo_window);
 
         ImGui::End();
+        ImGui::PopStyleColor();
     }
 
 
     // Main Render Function for UI
     void RenderUI() {
-        RenderFirstOrderParametersWindow(); // Render the helper popup
-        RenderEquationSelectionWindow();     // Render the equation generator window
-        RenderEquationDisplayWindow();
-        RenderWelcomeWindow();      // Render the welcome window
+        RenderFirstOrderParametersWindow(); // Render the first order parameters equation's helper popup
+        RenderEquationSelectionWindow();    // Render the main application window
+        RenderEquationDisplayWindow();      // Render generated equation
+        RenderWelcomeWindow();              // Render the welcome window
     }
 }
 
