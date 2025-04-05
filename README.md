@@ -1,9 +1,9 @@
-# Differential Equation Generator
+# Differential Equation Generator 📐
 
-A C++ program, built using [ImGui](https://github.com/ocornut/imgui), for creating differential equations. This application is designed to provide engaging opportunities - catering to students, educators, and researchers.
+A C++ program, built using [ImGui](https://github.com/ocornut/imgui), to generate differential equations. This application is designed to provide engaging opportunities - catering to students, educators, and researchers.
 
 
-## Features
+## Features 🧩
 - **Custom Equation Generation:** Easily create differential equations tailored to your needs. Supports various types like:
   - *First-Order Linear*
   - *Cauchy-Euler*
@@ -16,13 +16,13 @@ A C++ program, built using [ImGui](https://github.com/ocornut/imgui), for creati
 - **User-Friendly Interface:** Leverages the power of ImGui for an intuitive and responsive experience.
 - **Educational Tool:** Designed to cater to a broad audience, from students learning about differential equations to researchers exploring new ideas.
 
-## Screenshots
+## Screenshots 📸
 
 ![Application](Screenshot%202025-04-05%20074513.png)  
 ![Equation Generation](Screenshot%202025-04-05%20074542.png)  
-![Equation Generation](Screenshot%202025-04-05%20074515.png)
+![Equation Generation](Screenshot%202025-04-05%20074715.png)
 
-### Getting Started
+### Getting Started 🚀
 
 To contribute to this project and run the application without exe, follow these steps:
 
