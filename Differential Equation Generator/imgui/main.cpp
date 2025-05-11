@@ -4,6 +4,7 @@
 #include <d3d12.h>
 #include <dxgi1_4.h>
 #include <tchar.h>
+#include <windows.h>
 
 #include "App.h"
 
@@ -103,6 +104,8 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 // Main
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
 
+    SetConsoleOutputCP(CP_UTF8);
+
     // Create application window
     WNDCLASSEXW wc = { sizeof(wc), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr, L"Differential Equation Generator", nullptr };
     ::RegisterClassExW(&wc);
@@ -149,10 +152,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
 
-    // Set Font/Default Color Scheme
+    // Setting Font
     ImGuiIO& io = ImGui::GetIO();
-    io.Fonts->AddFontFromFileTTF("imgui/DejaVuSans.ttf", 16.0f);
+    ImFont* mainFont = io.Fonts->AddFontFromFileTTF("imgui/DejaVuSans.ttf", 16.0f);
+    // Load additional symbols (partial derivative ∂ and bullet point • and ²)
+    static const ImWchar customRange[] = { 0x2022, 0x2202, 0x2202, 0 }; // Includes bullet and partial derivative
+    ImFontConfig config;
+    config.MergeMode = true; // Merge this into the main font
+    ImFont* customFont = io.Fonts->AddFontFromFileTTF("imgui/DejaVuSans.ttf", 16.0f, &config, customRange);
     io.Fonts->Build();
+
     ImGui::StyleColorsLight();
 
     // Enable Controls

@@ -54,7 +54,7 @@ public:
     CauchyEulerEquation() : a(rand() % 10 + 1), b(rand() % 10 + 1) {}
     // toString
     std::string toString() override {
-        return "Generated Cauchy-Euler Equation:\nx^2 * d^2y/dx^2 + " + std::to_string(a) + "x*dy/dx + " + std::to_string(b) + "y = 0";
+        return u8"Generated Cauchy-Euler Equation:\nx²•d²y/dx² + " + std::to_string(a) + u8"x•dy/dx + " + std::to_string(b) + "y = 0";
     }
 };
 
@@ -68,7 +68,7 @@ public:
     HigherOrderEquation() : a(rand() % 10 + 1), b(rand() % 10 + 1), c(rand() % 10 + 1) {}
     // toString
     std::string toString() override {
-        return "Generated Higher-Order DE:\nd^2y/dx^2 + " + std::to_string(a) + "dy/dx + " + std::to_string(b) + "y = " + std::to_string(c);
+        return u8"Generated Higher-Order DE:\nd²y/dx + " + std::to_string(a) + "dy/dx + " + std::to_string(b) + "y = " + std::to_string(c);
     }
 };
 
@@ -82,7 +82,7 @@ public:
     PartialEquation() : alpha(rand() % 10 + 1), beta(rand() % 10 + 1) {}
     // toString
     std::string toString() override {
-        return "Generated Partial DE:\n∂^2u/∂x^2 + " + std::to_string(alpha) + "*∂u/∂x = " + std::to_string(beta);
+        return u8"Generated Partial DE:\n∂²u/∂x² + " + std::to_string(alpha) + u8"∂u/∂x = " + std::to_string(beta);
     }
 };
 
@@ -120,14 +120,14 @@ public:
         if (equationType == 1) {
             //type 1: ln-based equation
             return "Generated Exact Equation:\n" +
-                std::to_string(a) + "ln(y)*dy + " +
-                std::to_string(b) + "ln(x)*dx = 0";
+                std::to_string(a) + u8"ln(y)•dy + " +
+                std::to_string(b) + u8"ln(x)•dx = 0";
         }
         else {
             //type 2: kx-based equation
             return "Generated Exact Equation:\n" +
-                std::to_string(a * c) + "y*dy + " +
-                std::to_string(b * c) + "x*dx = 0";
+                std::to_string(a * c) + u8"y•dy + " +
+                std::to_string(b * c) + u8"x•dx = 0";
         }
     }
 };
@@ -142,7 +142,7 @@ public:
     SeparableEquation() : p(rand() % 10 + 1), q(rand() % 10 + 1) {}
     // toString
     std::string toString() override {
-        return "Generated Separable Equation:\n(dy/" + std::to_string(p) + "y) = (dx/" + std::to_string(q) + "x)";
+        return "Generated Separable Equation:\ndy/" + std::to_string(p) + "y = dx/" + std::to_string(q) + "x";
     }
 };
 
@@ -331,7 +331,7 @@ namespace App {
 
             // Display the generated equation
             if (current_equation) {
-                ImGui::Text("%s", current_equation->toString().c_str());
+                ImGui::TextUnformatted(current_equation->toString().c_str());
             }
             else {
                 ImGui::Text("No equation generated!");
